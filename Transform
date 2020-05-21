@@ -1,45 +1,24 @@
+# Dependencies 
 %matplotlib inline
 from matplotlib import style
 style.use('fivethirtyeight')
-import matplotlib.pyplot as plt
-
 import numpy as np
 import pandas as pd
-
 import datetime as dt
-
+from config import username,password
 
 # Python SQL toolkit and Object Relational Mapper
-
 import sqlalchemy
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func, inspect, desc
 
-engine = create_engine("sqlite:///Resources/hawaii.sqlite")
+connection="username:password@localhost:5432/state_COVID_db"
+engine = create_engine(f'postgresql://{connection}')
 
-# reflect an existing database into a new model
+state_confirms.to_sql(name='cases', con=engine, if_exists='append', index=True)
+state_deaths.to_sql(name='deaths', con=engine, if_exists='append', index=True)
+orders.to_sql(name='orders', con=engine, if_exists='append', index=Tru
 
-Base=automap_base()
-
-# reflect the tables
-Base.prepare(engine,reflect=True)
-
-# We can view all of the classes that automap found
-Base.classes.keys()
-
-inspector=inspect(engine)
-inspector.get_table_names()
-
-['measurement', 'station']
-
-# Save references to each table
-Measurement=Base.classes.measurement 
-Station=Base.classes.station
-
-# Create our session (link) from Python to the DB
-session = Session(engine)
-
-conn=engine.connect()
-statement=pd.read_sql("select * from measurement", conn)
-statement.head()
+# Read tables
+pd.read_sql_query('select * from cases', con=engine).head()
+pd.read_sql_query('select * from deaths', con=engine).head()
+pd.read_sql_query('select * from orders', con=engine).head()
